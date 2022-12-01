@@ -2,13 +2,19 @@ import shutil
 from pathlib import Path
 
 from youwol.pipelines.pipeline_typescript_weback_npm import Template, PackageType, Dependencies, \
-    RunTimeDeps, generate_template, DevServer
+    RunTimeDeps, generate_template, DevServer, Bundles, MainModule
 from youwol_utils import parse_json
 
 folder_path = Path(__file__).parent
 
 pkg_json = parse_json(folder_path / 'package.json')
 
+load_dependencies = {
+    "rxjs": "^6.5.5",
+    "@youwol/flux-view": "^1.0.3",
+    "@youwol/http-clients": "^1.0.2",
+    "@youwol/cdn-client": "^1.0.2"
+}
 
 template = Template(
     path=folder_path,
@@ -19,19 +25,21 @@ template = Template(
     author=pkg_json['author'],
     dependencies=Dependencies(
         runTime=RunTimeDeps(
-            load={
-                "rxjs": "^6.5.5",
-                "@youwol/flux-view": "^1.0.3",
-                "@youwol/http-clients": "^1.0.2",
-                "@youwol/cdn-client": "^1.0.2"
-            }
+            externals=load_dependencies
         )
     ),
     userGuide=True,
     devServer=DevServer(
         port=4001
+    ),
+    bundles=Bundles(
+        mainModule=MainModule(
+            entryFile='./index.ts',
+            loadDependencies=list(load_dependencies.keys())
+        )
+
     )
-    )
+)
 
 generate_template(template)
 shutil.copyfile(
@@ -39,7 +47,7 @@ shutil.copyfile(
     dst=folder_path / 'src' / 'auto-generated.ts'
 )
 for file in ['README.md', '.gitignore', '.npmignore', '.prettierignore', 'LICENSE', 'package.json',
-             'tsconfig.json', 'webpack.config.ts']:
+             'jest.config.js', 'tsconfig.json', 'webpack.config.ts']:
     shutil.copyfile(
         src=folder_path / '.template' / file,
         dst=folder_path / file
