@@ -1,6 +1,11 @@
 import { BehaviorSubject, Observable } from 'rxjs'
 import { map, mergeMap, skip } from 'rxjs/operators'
-import { CdnSessionsStorage, Json, raiseHTTPErrors } from '@youwol/http-clients'
+import { CdnSessionsStorage } from '@youwol/http-clients'
+import {
+    Json,
+    raiseHTTPErrors,
+    CallerRequestOptions,
+} from '@youwol/http-primitives'
 import { setup } from '../auto-generated'
 
 export interface Item {
