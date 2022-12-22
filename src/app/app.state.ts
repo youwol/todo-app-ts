@@ -14,6 +14,28 @@ export interface Item {
     done: boolean
 }
 
+export interface ClientInterface {
+    getData$({
+        packageName,
+        dataName,
+        callerOptions,
+    }: {
+        packageName: string
+        dataName: string
+        callerOptions?: CallerRequestOptions
+    }): Observable<{ items: Item[] }>
+
+    postData$({
+        packageName,
+        dataName,
+        body,
+    }: {
+        packageName: string
+        dataName: string
+        body: Json
+    }): Observable<Record<string, never>>
+}
+
 export class AppState {
     static STORAGE_KEY = 'todos'
     public readonly client = new CdnSessionsStorage.Client()
@@ -21,14 +43,8 @@ export class AppState {
     public readonly completed$: Observable<boolean>
     public readonly remaining$: Observable<Item[]>
 
-    constructor(defaultItems?: Array<Item>) {
-        this.items$ = defaultItems
-            ? new BehaviorSubject<Item[]>(defaultItems)
-            : new BehaviorSubject<Item[]>(
-                  JSON.parse(
-                      localStorage.getItem(AppState.STORAGE_KEY) || '[]',
-                  ),
-              )
+    constructor(params: { client?: ClientInterface } = {}) {
+        Object.assign(this, params)
 
         this.client
             .getData$({
