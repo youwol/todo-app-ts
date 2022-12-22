@@ -241,13 +241,14 @@ export class AppView implements VirtualDOM {
     public readonly class = `${AppView.ClassName} p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded`
     public readonly children: VirtualDOM[]
     public readonly filterMode$ = new BehaviorSubject<FilterMode>('All')
-
-    constructor(state: AppState) {
+    public readonly state: AppState
+    constructor(params: { state: AppState }) {
+        Object.assign(this, params)
         this.children = [
             new TitleView(),
-            new NewItemView(state),
-            new ItemsView(state, this.filterMode$),
-            new FooterView(state, this.filterMode$),
+            new NewItemView(this.state),
+            new ItemsView(this.state, this.filterMode$),
+            new FooterView(this.state, this.filterMode$),
         ]
     }
 }
