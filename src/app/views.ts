@@ -12,7 +12,8 @@ import { AppState, Item } from './app.state'
 type FilterMode = 'All' | 'Active' | 'Completed'
 
 export class TitleView implements VirtualDOM {
-    public readonly class = 'text-center w-100 border rounded p-2 my-3'
+    static ClassName = 'title-view'
+    public readonly class = `${TitleView.ClassName} text-center w-100 border rounded p-2 my-3`
     public readonly children: VirtualDOM[]
 
     public readonly date$ = timer(0, 1000).pipe(map(() => new Date()))
@@ -36,9 +37,9 @@ export class TitleView implements VirtualDOM {
 }
 
 export class ItemView implements VirtualDOM {
+    static ClassName = 'item-view'
     public readonly tag = 'span'
-    public readonly class =
-        'item-view d-flex align-items-center my-1 justify-content-between fv-pointer'
+    public readonly class = `${ItemView.ClassName} d-flex align-items-center my-1 justify-content-between fv-pointer`
 
     public readonly children: VirtualDOM[]
     public readonly state: AppState
@@ -52,7 +53,7 @@ export class ItemView implements VirtualDOM {
         Object.assign(this, { item, state })
 
         const baseClass =
-            'fv-color-primary fv-hover-color-focus p-2 rounded-circle fv-text-success'
+            'item-view-toggle fv-color-primary fv-hover-color-focus p-2 rounded-circle fv-text-success'
         this.children = [
             {
                 class: baseClass + (item.done ? ' fas fa-check' : ''),
@@ -71,7 +72,7 @@ export class ItemView implements VirtualDOM {
                 },
             ),
             {
-                class: 'item-remove fas fa-times fv-text-error mx-2 p-1 fv-hover-opacity',
+                class: 'item-view-remove fas fa-times fv-text-error mx-2 p-1 fv-hover-opacity',
                 onclick: () => state.deleteItem(item.id),
             },
         ]
@@ -80,7 +81,7 @@ export class ItemView implements VirtualDOM {
     presentationView(): VirtualDOM {
         return {
             tag: 'span',
-            class: `px-2 user-select-none ${
+            class: `presentation-view px-2 user-select-none ${
                 this.item.done ? 'fv-text-disabled' : 'fv-text-focus'
             }`,
             style: { 'text-decoration': this.item.done ? 'line-through' : '' },
@@ -93,6 +94,7 @@ export class ItemView implements VirtualDOM {
         return {
             tag: 'input',
             type: 'text',
+            class: 'edition-view',
             value: this.item.name,
             onclick: (ev) => ev.stopPropagation(),
 
@@ -107,7 +109,8 @@ export class ItemView implements VirtualDOM {
 }
 
 export class ItemsView implements VirtualDOM {
-    public readonly class = 'border rounded p-2 m-2 flex-grow-1 overflow-auto'
+    static ClassName = 'items-view'
+    public readonly class = `${ItemsView.ClassName} border rounded p-2 m-2 flex-grow-1 overflow-auto`
     public readonly style = {
         'min-height': '200px',
     }
@@ -133,10 +136,10 @@ export class ItemsView implements VirtualDOM {
 }
 
 export class NewItemView implements VirtualDOM {
+    static ClassName = 'new-item-view'
     public readonly tag = 'header'
     public readonly children: VirtualDOM[]
-    public readonly class =
-        'd-flex align-items-center my-3 justify-content-around'
+    public readonly class = `${NewItemView.ClassName} d-flex align-items-center my-3 justify-content-around`
     public readonly style = {
         fontSize: 'x-large',
     }
@@ -173,8 +176,8 @@ export class NewItemView implements VirtualDOM {
 }
 
 export class FooterView implements VirtualDOM {
-    public readonly class =
-        'd-flex align-items-center px-3 border-top py-2 text-secondary'
+    static ClassName = 'footer-item-view'
+    public readonly class = `${FooterView.ClassName} d-flex align-items-center px-3 border-top py-2 text-secondary`
     public readonly children: VirtualDOM[]
 
     constructor(state: AppState, filterMode$: BehaviorSubject<FilterMode>) {
@@ -234,8 +237,8 @@ export class FooterView implements VirtualDOM {
 }
 
 export class AppView implements VirtualDOM {
-    public readonly class =
-        'p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded'
+    static ClassName = 'app-view'
+    public readonly class = `${AppView.ClassName} p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded`
     public readonly children: VirtualDOM[]
     public readonly filterMode$ = new BehaviorSubject<FilterMode>('All')
 
