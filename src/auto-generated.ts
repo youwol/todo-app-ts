@@ -3,7 +3,7 @@ const runTimeDependencies = {
     "externals": {
         "rxjs": "^6.5.5",
         "@youwol/flux-view": "^1.0.3",
-        "@youwol/http-clients": "^1.0.2",
+        "@youwol/http-clients": "^2.0.3",
         "@youwol/cdn-client": "^1.0.2"
     },
     "includedInBundle": {}
@@ -11,7 +11,7 @@ const runTimeDependencies = {
 const externals = {
     "rxjs": "window['rxjs_APIv6']",
     "@youwol/flux-view": "window['@youwol/flux-view_APIv1']",
-    "@youwol/http-clients": "window['@youwol/http-clients_APIv1']",
+    "@youwol/http-clients": "window['@youwol/http-clients_APIv2']",
     "@youwol/cdn-client": "window['@youwol/cdn-client_APIv1']",
     "rxjs/operators": "window['rxjs_APIv6']['operators']"
 }
@@ -25,7 +25,7 @@ const exportedSymbols = {
         "exportedSymbol": "@youwol/flux-view"
     },
     "@youwol/http-clients": {
-        "apiKey": "1",
+        "apiKey": "2",
         "exportedSymbol": "@youwol/http-clients"
     },
     "@youwol/cdn-client": {
