@@ -154,7 +154,7 @@ export class NewItemView implements VirtualDOM {
                         completed ? 'fv-text-disable' : 'fv-text-focus',
                     {
                         wrapper: (d) =>
-                            `${d} fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
+                            `${d} new-item-view-toggle-all fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
                     },
                 ),
                 onclick: () => state.toggleAll(),
@@ -190,7 +190,7 @@ export class FooterView implements VirtualDOM {
                         : 'fv-text-disabled',
                 {
                     wrapper: (d) =>
-                        `${d} fv-pointer mx-2 fv-hover-text-enabled`,
+                        `${target} ${d} fv-pointer mx-2 fv-hover-text-enabled`,
                 },
             )
 
