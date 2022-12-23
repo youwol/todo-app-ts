@@ -11,11 +11,25 @@ import { AppState, Item } from './app.state'
 
 type FilterMode = 'All' | 'Active' | 'Completed'
 
+/**
+ * @category View
+ */
 export class TitleView implements VirtualDOM {
     static ClassName = 'title-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly class = `${TitleView.ClassName} text-center w-100 border rounded p-2 my-3`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
 
+    /**
+     * @group Observable
+     */
     public readonly date$ = timer(0, 1000).pipe(map(() => new Date()))
 
     constructor() {
@@ -36,14 +50,37 @@ export class TitleView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class ItemView implements VirtualDOM {
+    /**
+     * @group Immutable Static Constants
+     */
     static ClassName = 'item-view'
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly tag = 'span'
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly class = `${ItemView.ClassName} d-flex align-items-center my-1 justify-content-between fv-pointer`
-
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
+    /**
+     * @group States
+     */
     public readonly state: AppState
+    /**
+     * @group Immutable Constants
+     */
     public readonly item: Item
+    /**
+     * @group Observables
+     */
     private readonly editing$ = new BehaviorSubject<boolean>(false)
 
     constructor(
@@ -108,12 +145,28 @@ export class ItemView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class ItemsView implements VirtualDOM {
+    /**
+     * @group Immutable Static Constants
+     */
     static ClassName = 'items-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly class = `${ItemsView.ClassName} border rounded p-2 m-2 flex-grow-1 overflow-auto`
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly style = {
         'min-height': '200px',
     }
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: Stream$<Item[], VirtualDOM[]>
 
     private filters: Record<FilterMode, (item: Item) => boolean> = {
@@ -135,11 +188,29 @@ export class ItemsView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class NewItemView implements VirtualDOM {
     static ClassName = 'new-item-view'
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly tag = 'header'
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly class = `${NewItemView.ClassName} d-flex align-items-center my-3 justify-content-around`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly style = {
         fontSize: 'x-large',
     }
@@ -175,9 +246,23 @@ export class NewItemView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class FooterView implements VirtualDOM {
+    /**
+     * @group Immutable Static Constants
+     */
     static ClassName = 'footer-item-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly class = `${FooterView.ClassName} d-flex align-items-center px-3 border-top py-2 text-secondary`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
 
     constructor(state: AppState, filterMode$: BehaviorSubject<FilterMode>) {
@@ -236,6 +321,10 @@ export class FooterView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ * @category Entry Point
+ */
 export class AppView implements VirtualDOM {
     static ClassName = 'app-view'
     public readonly class = `${AppView.ClassName} p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded`

@@ -8,12 +8,18 @@ import {
 } from '@youwol/http-primitives'
 import { setup } from '../auto-generated'
 
+/**
+ * @category Interface
+ */
 export interface Item {
     id: number
     name: string
     done: boolean
 }
 
+/**
+ * @category HTTP
+ */
 export interface ClientInterface {
     getData$({
         packageName,
@@ -36,11 +42,34 @@ export interface ClientInterface {
     }): Observable<Record<string, never>>
 }
 
+/**
+ * @category State
+ * @category Entry Point
+ */
 export class AppState {
+    /**
+     * @group Immutable Static Constants
+     */
     static STORAGE_KEY = 'todos'
+
+    /**
+     * @group HTTP
+     */
     public readonly client = new CdnSessionsStorage.Client()
+
+    /**
+     * @group Observables
+     */
     public readonly items$: Observable<Item[]>
+
+    /**
+     * @group Observables
+     */
     public readonly completed$: Observable<boolean>
+
+    /**
+     * @group Observables
+     */
     public readonly remaining$: Observable<Item[]>
 
     private readonly __items$ = new BehaviorSubject<Item[]>([])
