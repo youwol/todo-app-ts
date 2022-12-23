@@ -5,6 +5,6 @@ import { render } from '@youwol/flux-view'
 const vDOM = new AppView({
     state: new AppState(),
 })
-document.getElementById('content').appendChild(render(vDOM))
+document.body.appendChild(render(vDOM))
 
 export {}
