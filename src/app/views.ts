@@ -11,10 +11,25 @@ import { AppState, Item } from './app.state'
 
 type FilterMode = 'All' | 'Active' | 'Completed'
 
+/**
+ * @category View
+ */
 export class TitleView implements VirtualDOM {
-    public readonly class = 'text-center w-100 border rounded p-2 my-3'
+    static ClassName = 'title-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly class = `${TitleView.ClassName} text-center w-100 border rounded p-2 my-3`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
 
+    /**
+     * @group Observable
+     */
     public readonly date$ = timer(0, 1000).pipe(map(() => new Date()))
 
     constructor() {
@@ -35,14 +50,37 @@ export class TitleView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class ItemView implements VirtualDOM {
+    /**
+     * @group Immutable Static Constants
+     */
+    static ClassName = 'item-view'
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly tag = 'span'
-    public readonly class =
-        'item-view d-flex align-items-center my-1 justify-content-between fv-pointer'
-
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly class = `${ItemView.ClassName} d-flex align-items-center my-1 justify-content-between fv-pointer`
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
+    /**
+     * @group States
+     */
     public readonly state: AppState
+    /**
+     * @group Immutable Constants
+     */
     public readonly item: Item
+    /**
+     * @group Observables
+     */
     private readonly editing$ = new BehaviorSubject<boolean>(false)
 
     constructor(
@@ -52,7 +90,7 @@ export class ItemView implements VirtualDOM {
         Object.assign(this, { item, state })
 
         const baseClass =
-            'fv-color-primary fv-hover-color-focus p-2 rounded-circle fv-text-success'
+            'item-view-toggle fv-color-primary fv-hover-color-focus p-2 rounded-circle fv-text-success'
         this.children = [
             {
                 class: baseClass + (item.done ? ' fas fa-check' : ''),
@@ -71,7 +109,7 @@ export class ItemView implements VirtualDOM {
                 },
             ),
             {
-                class: 'item-remove fas fa-times fv-text-error mx-2 p-1 fv-hover-opacity',
+                class: 'item-view-remove fas fa-times fv-text-error mx-2 p-1 fv-hover-opacity',
                 onclick: () => state.deleteItem(item.id),
             },
         ]
@@ -80,7 +118,7 @@ export class ItemView implements VirtualDOM {
     presentationView(): VirtualDOM {
         return {
             tag: 'span',
-            class: `px-2 user-select-none ${
+            class: `presentation-view px-2 user-select-none ${
                 this.item.done ? 'fv-text-disabled' : 'fv-text-focus'
             }`,
             style: { 'text-decoration': this.item.done ? 'line-through' : '' },
@@ -93,6 +131,7 @@ export class ItemView implements VirtualDOM {
         return {
             tag: 'input',
             type: 'text',
+            class: 'edition-view',
             value: this.item.name,
             onclick: (ev) => ev.stopPropagation(),
 
@@ -106,11 +145,28 @@ export class ItemView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class ItemsView implements VirtualDOM {
-    public readonly class = 'border rounded p-2 m-2 flex-grow-1 overflow-auto'
+    /**
+     * @group Immutable Static Constants
+     */
+    static ClassName = 'items-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly class = `${ItemsView.ClassName} border rounded p-2 m-2 flex-grow-1 overflow-auto`
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly style = {
         'min-height': '200px',
     }
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: Stream$<Item[], VirtualDOM[]>
 
     private filters: Record<FilterMode, (item: Item) => boolean> = {
@@ -132,11 +188,29 @@ export class ItemsView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class NewItemView implements VirtualDOM {
+    static ClassName = 'new-item-view'
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly tag = 'header'
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
-    public readonly class =
-        'd-flex align-items-center my-3 justify-content-around'
+
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly class = `${NewItemView.ClassName} d-flex align-items-center my-3 justify-content-around`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly style = {
         fontSize: 'x-large',
     }
@@ -151,7 +225,7 @@ export class NewItemView implements VirtualDOM {
                         completed ? 'fv-text-disable' : 'fv-text-focus',
                     {
                         wrapper: (d) =>
-                            `${d} fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
+                            `${d} new-item-view-toggle-all fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
                     },
                 ),
                 onclick: () => state.toggleAll(),
@@ -172,9 +246,23 @@ export class NewItemView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ */
 export class FooterView implements VirtualDOM {
-    public readonly class =
-        'd-flex align-items-center px-3 border-top py-2 text-secondary'
+    /**
+     * @group Immutable Static Constants
+     */
+    static ClassName = 'footer-item-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly class = `${FooterView.ClassName} d-flex align-items-center px-3 border-top py-2 text-secondary`
+
+    /**
+     * @group Immutable DOM Constants
+     */
     public readonly children: VirtualDOM[]
 
     constructor(state: AppState, filterMode$: BehaviorSubject<FilterMode>) {
@@ -187,7 +275,7 @@ export class FooterView implements VirtualDOM {
                         : 'fv-text-disabled',
                 {
                     wrapper: (d) =>
-                        `${d} fv-pointer mx-2 fv-hover-text-enabled`,
+                        `${target} ${d} fv-pointer mx-2 fv-hover-text-enabled`,
                 },
             )
 
@@ -233,18 +321,23 @@ export class FooterView implements VirtualDOM {
     }
 }
 
+/**
+ * @category View
+ * @category Entry Point
+ */
 export class AppView implements VirtualDOM {
-    public readonly class =
-        'p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded'
+    static ClassName = 'app-view'
+    public readonly class = `${AppView.ClassName} p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded`
     public readonly children: VirtualDOM[]
     public readonly filterMode$ = new BehaviorSubject<FilterMode>('All')
-
-    constructor(state: AppState) {
+    public readonly state: AppState
+    constructor(params: { state: AppState }) {
+        Object.assign(this, params)
         this.children = [
             new TitleView(),
-            new NewItemView(state),
-            new ItemsView(state, this.filterMode$),
-            new FooterView(state, this.filterMode$),
+            new NewItemView(this.state),
+            new ItemsView(this.state, this.filterMode$),
+            new FooterView(this.state, this.filterMode$),
         ]
     }
 }

@@ -3,7 +3,8 @@ const runTimeDependencies = {
     "externals": {
         "rxjs": "^6.5.5",
         "@youwol/flux-view": "^1.0.3",
-        "@youwol/http-clients": "^1.0.2",
+        "@youwol/http-clients": "^2.0.3",
+        "@youwol/http-primitives": "^0.1.2",
         "@youwol/cdn-client": "^1.0.2"
     },
     "includedInBundle": {}
@@ -11,7 +12,8 @@ const runTimeDependencies = {
 const externals = {
     "rxjs": "window['rxjs_APIv6']",
     "@youwol/flux-view": "window['@youwol/flux-view_APIv1']",
-    "@youwol/http-clients": "window['@youwol/http-clients_APIv1']",
+    "@youwol/http-clients": "window['@youwol/http-clients_APIv2']",
+    "@youwol/http-primitives": "window['@youwol/http-primitives_APIv01']",
     "@youwol/cdn-client": "window['@youwol/cdn-client_APIv1']",
     "rxjs/operators": "window['rxjs_APIv6']['operators']"
 }
@@ -25,8 +27,12 @@ const exportedSymbols = {
         "exportedSymbol": "@youwol/flux-view"
     },
     "@youwol/http-clients": {
-        "apiKey": "1",
+        "apiKey": "2",
         "exportedSymbol": "@youwol/http-clients"
+    },
+    "@youwol/http-primitives": {
+        "apiKey": "01",
+        "exportedSymbol": "@youwol/http-primitives"
     },
     "@youwol/cdn-client": {
         "apiKey": "1",
@@ -40,6 +46,7 @@ const mainEntry : {entryFile: string,loadDependencies:string[]} = {
         "rxjs",
         "@youwol/flux-view",
         "@youwol/http-clients",
+        "@youwol/http-primitives",
         "@youwol/cdn-client"
     ]
 }
@@ -53,13 +60,13 @@ const entries = {
 export const setup = {
     name:'@youwol/todo-app-ts',
         assetId:'QHlvdXdvbC90b2RvLWFwcC10cw==',
-    version:'0.0.2',
+    version:'0.0.3',
     shortDescription:"todo app in typescript using flux-view",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/todo-app-ts',
     npmPackage:'https://www.npmjs.com/package/@youwol/todo-app-ts',
     sourceGithub:'https://github.com/youwol/todo-app-ts',
     userGuide:'https://l.youwol.com/doc/@youwol/todo-app-ts',
-    apiVersion:'002',
+    apiVersion:'003',
     runTimeDependencies,
     externals,
     exportedSymbols,
@@ -84,7 +91,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/todo-app-ts_APIv002`]
+            return window[`@youwol/todo-app-ts_APIv003`]
         })
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
@@ -99,7 +106,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/todo-app-ts#0.0.2~dist/@youwol/todo-app-ts/${entry.name}.js`
+            `@youwol/todo-app-ts#0.0.3~dist/@youwol/todo-app-ts/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
@@ -110,7 +117,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/todo-app-ts/${entry.name}_APIv002`]
+            return window[`@youwol/todo-app-ts/${entry.name}_APIv003`]
         })
     },
     getCdnDependencies(name?: string){
