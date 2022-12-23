@@ -73,9 +73,7 @@ export class AppState {
                     }),
                 ),
             )
-            .subscribe(() => {
-                console.log('data saved')
-            })
+            .subscribe()
 
         this.__items$.subscribe((items) => {
             localStorage.setItem(AppState.STORAGE_KEY, JSON.stringify(items))
