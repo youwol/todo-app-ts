@@ -60,7 +60,7 @@ const entries = {
 export const setup = {
     name:'@youwol/todo-app-ts',
         assetId:'QHlvdXdvbC90b2RvLWFwcC10cw==',
-    version:'0.0.3-wip',
+    version:'0.0.3',
     shortDescription:"todo app in typescript using flux-view",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/todo-app-ts',
     npmPackage:'https://www.npmjs.com/package/@youwol/todo-app-ts',
@@ -106,7 +106,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/todo-app-ts#0.0.3-wip~dist/@youwol/todo-app-ts/${entry.name}.js`
+            `@youwol/todo-app-ts#0.0.3~dist/@youwol/todo-app-ts/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
