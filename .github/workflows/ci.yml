@@ -11,3 +11,5 @@ jobs:
   nestor_typescript_ci:
     name: Typescript
     uses: youwol-jdecharne/nestor/.github/workflows/typescript-ci.yml@v3
+    with:
+      pyYouwolRef: feature/refactor
