@@ -62,7 +62,7 @@ export const setup = {
         assetId:'QHlvdXdvbC90b2RvLWFwcC10cw==',
     version:'0.0.3',
     shortDescription:"todo app in typescript using flux-view",
-    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/todo-app-ts',
+    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/todo-app-ts&tab=doc',
     npmPackage:'https://www.npmjs.com/package/@youwol/todo-app-ts',
     sourceGithub:'https://github.com/youwol/todo-app-ts',
     userGuide:'https://l.youwol.com/doc/@youwol/todo-app-ts',
@@ -77,7 +77,7 @@ export const setup = {
     },
 
     installMainModule: ({cdnClient, installParameters}:{
-        cdnClient:{install:(unknown) => Promise<Window>},
+        cdnClient:{install:(unknown) => Promise<WindowOrWorkerGlobalScope>},
         installParameters?
     }) => {
         const parameters = installParameters || {}
@@ -96,7 +96,7 @@ export const setup = {
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
         name: string,
-        cdnClient:{install:(unknown) => Promise<Window>},
+        cdnClient:{install:(unknown) => Promise<WindowOrWorkerGlobalScope>},
         installParameters?
     }) => {
         const entry = secondaryEntries[name]
