@@ -60,13 +60,13 @@ const entries = {
 export const setup = {
     name:'@youwol/todo-app-ts',
         assetId:'QHlvdXdvbC90b2RvLWFwcC10cw==',
-    version:'0.0.3',
+    version:'0.0.4-wip',
     shortDescription:"todo app in typescript using flux-view",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/todo-app-ts&tab=doc',
     npmPackage:'https://www.npmjs.com/package/@youwol/todo-app-ts',
     sourceGithub:'https://github.com/youwol/todo-app-ts',
     userGuide:'https://l.youwol.com/doc/@youwol/todo-app-ts',
-    apiVersion:'003',
+    apiVersion:'004',
     runTimeDependencies,
     externals,
     exportedSymbols,
@@ -91,7 +91,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/todo-app-ts_APIv003`]
+            return window[`@youwol/todo-app-ts_APIv004`]
         })
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
@@ -106,7 +106,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/todo-app-ts#0.0.3~dist/@youwol/todo-app-ts/${entry.name}.js`
+            `@youwol/todo-app-ts#0.0.4-wip~dist/@youwol/todo-app-ts/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
@@ -117,7 +117,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/todo-app-ts/${entry.name}_APIv003`]
+            return window[`@youwol/todo-app-ts/${entry.name}_APIv004`]
         })
     },
     getCdnDependencies(name?: string){
