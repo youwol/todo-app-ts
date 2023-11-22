@@ -1,42 +1,41 @@
 
 const runTimeDependencies = {
     "externals": {
-        "rxjs": "^6.5.5",
-        "@youwol/flux-view": "^1.0.3",
-        "@youwol/http-clients": "^2.0.3",
-        "@youwol/http-primitives": "^0.1.2",
-        "@youwol/cdn-client": "^1.0.2"
+        "rxjs": "^7.5.6",
+        "@youwol/rx-vdom": "^1.0.1",
+        "@youwol/http-clients": "^3.0.0",
+        "@youwol/http-primitives": "^0.2.0",
+        "@youwol/webpm-client": "^3.0.0"
     },
     "includedInBundle": {}
 }
 const externals = {
-    "rxjs": "window['rxjs_APIv6']",
-    "@youwol/flux-view": "window['@youwol/flux-view_APIv1']",
-    "@youwol/http-clients": "window['@youwol/http-clients_APIv2']",
-    "@youwol/http-primitives": "window['@youwol/http-primitives_APIv01']",
-    "@youwol/cdn-client": "window['@youwol/cdn-client_APIv1']",
-    "rxjs/operators": "window['rxjs_APIv6']['operators']"
+    "rxjs": "window['rxjs_APIv7']",
+    "@youwol/rx-vdom": "window['@youwol/rx-vdom_APIv1']",
+    "@youwol/http-clients": "window['@youwol/http-clients_APIv3']",
+    "@youwol/http-primitives": "window['@youwol/http-primitives_APIv02']",
+    "@youwol/webpm-client": "window['@youwol/webpm-client_APIv3']"
 }
 const exportedSymbols = {
     "rxjs": {
-        "apiKey": "6",
+        "apiKey": "7",
         "exportedSymbol": "rxjs"
     },
-    "@youwol/flux-view": {
+    "@youwol/rx-vdom": {
         "apiKey": "1",
-        "exportedSymbol": "@youwol/flux-view"
+        "exportedSymbol": "@youwol/rx-vdom"
     },
     "@youwol/http-clients": {
-        "apiKey": "2",
+        "apiKey": "3",
         "exportedSymbol": "@youwol/http-clients"
     },
     "@youwol/http-primitives": {
-        "apiKey": "01",
+        "apiKey": "02",
         "exportedSymbol": "@youwol/http-primitives"
     },
-    "@youwol/cdn-client": {
-        "apiKey": "1",
-        "exportedSymbol": "@youwol/cdn-client"
+    "@youwol/webpm-client": {
+        "apiKey": "3",
+        "exportedSymbol": "@youwol/webpm-client"
     }
 }
 
@@ -44,10 +43,10 @@ const mainEntry : {entryFile: string,loadDependencies:string[]} = {
     "entryFile": "./index.ts",
     "loadDependencies": [
         "rxjs",
-        "@youwol/flux-view",
+        "@youwol/rx-vdom",
         "@youwol/http-clients",
         "@youwol/http-primitives",
-        "@youwol/cdn-client"
+        "@youwol/webpm-client"
     ]
 }
 
