@@ -1,12 +1,5 @@
-import {
-    attr$,
-    child$,
-    children$,
-    Stream$,
-    VirtualDOM,
-} from '@youwol/flux-view'
-import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { ChildrenLike, RxChildren, VirtualDOM } from '@youwol/rx-vdom'
+import { BehaviorSubject, combineLatest, Observable, timer, map } from 'rxjs'
 import { AppState, Item } from './app.state'
 
 type FilterMode = 'All' | 'Active' | 'Completed'
@@ -14,8 +7,12 @@ type FilterMode = 'All' | 'Active' | 'Completed'
 /**
  * @category View
  */
-export class TitleView implements VirtualDOM {
+export class TitleView implements VirtualDOM<'div'> {
     static ClassName = 'title-view'
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly tag = 'div'
 
     /**
      * @group Immutable DOM Constants
@@ -25,7 +22,7 @@ export class TitleView implements VirtualDOM {
     /**
      * @group Immutable DOM Constants
      */
-    public readonly children: VirtualDOM[]
+    public readonly children: ChildrenLike
 
     /**
      * @group Observable
@@ -40,11 +37,12 @@ export class TitleView implements VirtualDOM {
                 innerText: 'Todo',
             },
             {
+                tag: 'div',
                 class: 'fas fa-clock',
-                innerText: attr$(
-                    this.date$,
-                    (date) => `${date.toTimeString()}`,
-                ),
+                innerText: {
+                    source$: this.date$,
+                    vdomMap: (date: Date) => `${date.toTimeString()}`,
+                },
             },
         ]
     }
@@ -53,7 +51,7 @@ export class TitleView implements VirtualDOM {
 /**
  * @category View
  */
-export class ItemView implements VirtualDOM {
+export class ItemView implements VirtualDOM<'span'> {
     /**
      * @group Immutable Static Constants
      */
@@ -69,7 +67,7 @@ export class ItemView implements VirtualDOM {
     /**
      * @group Immutable DOM Constants
      */
-    public readonly children: VirtualDOM[]
+    public readonly children: ChildrenLike
     /**
      * @group States
      */
@@ -93,54 +91,51 @@ export class ItemView implements VirtualDOM {
             'item-view-toggle fv-color-primary fv-hover-color-focus p-2 rounded-circle fv-text-success'
         this.children = [
             {
+                tag: 'div',
                 class: baseClass + (item.done ? ' fas fa-check' : ''),
                 style: { width: '35px', height: '35px' },
                 onclick: () => state.toggleItem(item.id),
             },
-            child$(
-                this.editing$,
-                (editing: boolean) =>
-                    editing ? this.editionView() : this.presentationView(),
-                {
-                    sideEffects: (
-                        _,
-                        elem: HTMLSpanElement | HTMLInputElement,
-                    ) => elem.focus(),
-                },
-            ),
             {
+                source$: this.editing$,
+                vdomMap: (editing: boolean) =>
+                    editing ? this.editionView() : this.presentationView(),
+                sideEffects: (rxElem) => rxElem.element.focus(),
+            },
+            {
+                tag: 'div',
                 class: 'item-view-remove fas fa-times fv-text-error mx-2 p-1 fv-hover-opacity',
                 onclick: () => state.deleteItem(item.id),
             },
         ]
     }
 
-    presentationView(): VirtualDOM {
+    presentationView(): VirtualDOM<'span'> {
         return {
             tag: 'span',
             class: `presentation-view px-2 user-select-none ${
                 this.item.done ? 'fv-text-disabled' : 'fv-text-focus'
             }`,
-            style: { 'text-decoration': this.item.done ? 'line-through' : '' },
+            style: { textDecoration: this.item.done ? 'line-through' : '' },
             innerText: this.item.name,
             ondblclick: () => this.editing$.next(true),
         }
     }
 
-    editionView(): VirtualDOM {
+    editionView(): VirtualDOM<'input'> {
         return {
             tag: 'input',
             type: 'text',
             class: 'edition-view',
             value: this.item.name,
             onclick: (ev) => ev.stopPropagation(),
-
             onkeypress: (ev) => {
                 if (ev.key == 'Enter') {
-                    this.state.setName(this.item.id, ev.target.value)
+                    this.state.setName(this.item.id, ev.target['value'])
                 }
             },
-            onblur: (ev) => this.state.setName(this.item.id, ev.target.value),
+            onblur: (ev) =>
+                this.state.setName(this.item.id, ev.target['value']),
         }
     }
 }
@@ -148,12 +143,15 @@ export class ItemView implements VirtualDOM {
 /**
  * @category View
  */
-export class ItemsView implements VirtualDOM {
+export class ItemsView implements VirtualDOM<'div'> {
     /**
      * @group Immutable Static Constants
      */
     static ClassName = 'items-view'
-
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly tag = 'div'
     /**
      * @group Immutable DOM Constants
      */
@@ -162,12 +160,12 @@ export class ItemsView implements VirtualDOM {
      * @group Immutable DOM Constants
      */
     public readonly style = {
-        'min-height': '200px',
+        minHeight: '200px',
     }
     /**
      * @group Immutable DOM Constants
      */
-    public readonly children: Stream$<Item[], VirtualDOM[]>
+    public readonly children: RxChildren<'replace', Item[]>
 
     private filters: Record<FilterMode, (item: Item) => boolean> = {
         All: () => true,
@@ -182,16 +180,18 @@ export class ItemsView implements VirtualDOM {
             ),
         )
 
-        this.children = children$(selectedItems$, (items) =>
-            items.map((item) => new ItemView(item, state)),
-        )
+        this.children = {
+            policy: 'replace',
+            source$: selectedItems$,
+            vdomMap: (items) => items.map((item) => new ItemView(item, state)),
+        }
     }
 }
 
 /**
  * @category View
  */
-export class NewItemView implements VirtualDOM {
+export class NewItemView implements VirtualDOM<'header'> {
     static ClassName = 'new-item-view'
     /**
      * @group Immutable DOM Constants
@@ -201,7 +201,7 @@ export class NewItemView implements VirtualDOM {
     /**
      * @group Immutable DOM Constants
      */
-    public readonly children: VirtualDOM[]
+    public readonly children: ChildrenLike
 
     /**
      * @group Immutable DOM Constants
@@ -219,27 +219,25 @@ export class NewItemView implements VirtualDOM {
         this.children = [
             {
                 tag: 'i',
-                class: attr$(
-                    state.completed$,
-                    (completed): string =>
+                class: {
+                    source$: state.completed$,
+                    vdomMap: (completed): string =>
                         completed ? 'fv-text-disable' : 'fv-text-focus',
-                    {
-                        wrapper: (d) =>
-                            `${d} new-item-view-toggle-all fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
-                    },
-                ),
+                    wrapper: (d) =>
+                        `${d} new-item-view-toggle-all fas fa-chevron-down p-2 fv-pointer fv-color-primary rounded-circle`,
+                },
                 onclick: () => state.toggleAll(),
             },
             {
                 tag: 'input',
-                autofocus: 'autofocus',
+                autofocus: true,
                 autocomplete: 'off',
                 placeholder: 'What needs to be done?',
                 class: 'new-todo px-2',
                 onkeypress: (ev) => {
                     ev.key == 'Enter' &&
-                        state.addItem(ev.target.value) &&
-                        (ev.target.value = '')
+                        state.addItem(ev.target['value']) &&
+                        (ev.target['value'] = '')
                 },
             },
         ]
@@ -249,11 +247,16 @@ export class NewItemView implements VirtualDOM {
 /**
  * @category View
  */
-export class FooterView implements VirtualDOM {
+export class FooterView implements VirtualDOM<'div'> {
     /**
      * @group Immutable Static Constants
      */
     static ClassName = 'footer-item-view'
+
+    /**
+     * @group Immutable DOM Constants
+     */
+    public readonly tag = 'div'
 
     /**
      * @group Immutable DOM Constants
@@ -263,34 +266,30 @@ export class FooterView implements VirtualDOM {
     /**
      * @group Immutable DOM Constants
      */
-    public readonly children: VirtualDOM[]
+    public readonly children: ChildrenLike
 
     constructor(state: AppState, filterMode$: BehaviorSubject<FilterMode>) {
-        const class$ = (target) =>
-            attr$(
-                filterMode$,
-                (mode): string =>
-                    mode == target
-                        ? 'fv-text-focus fv-color-primary rounded px-1'
-                        : 'fv-text-disabled',
-                {
-                    wrapper: (d) =>
-                        `${target} ${d} fv-pointer mx-2 fv-hover-text-enabled`,
-                },
-            )
+        const class$ = (target) => ({
+            source$: filterMode$,
+            vdomMap: (mode): string =>
+                mode == target
+                    ? 'fv-text-focus fv-color-primary rounded px-1'
+                    : 'fv-text-disabled',
+            wrapper: (d) =>
+                `${target} ${d} fv-pointer mx-2 fv-hover-text-enabled`,
+        })
 
         this.children = [
             {
                 tag: 'span',
-                innerText: attr$(
-                    state.remaining$,
-                    (items: Item[]): string => `${items.length}`,
-                    {
-                        wrapper: (d) => `${d} items left`,
-                    },
-                ),
+                innerText: {
+                    source$: state.remaining$,
+                    vdomMap: (items: Item[]): string => `${items.length}`,
+                    wrapper: (d) => `${d} items left`,
+                },
             },
             {
+                tag: 'div',
                 class: 'd-flex align-items-center mx-auto',
                 children: [
                     {
@@ -325,10 +324,11 @@ export class FooterView implements VirtualDOM {
  * @category View
  * @category Entry Point
  */
-export class AppView implements VirtualDOM {
+export class AppView implements VirtualDOM<'div'> {
     static ClassName = 'app-view'
+    public readonly tag = 'div'
     public readonly class = `${AppView.ClassName} p-3 w-100 h-100 fv-bg-background fv-text-primary d-flex flex-column rounded`
-    public readonly children: VirtualDOM[]
+    public readonly children: ChildrenLike
     public readonly filterMode$ = new BehaviorSubject<FilterMode>('All')
     public readonly state: AppState
     constructor(params: { state: AppState }) {
