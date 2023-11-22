@@ -7,7 +7,7 @@ import {
     NewItemView,
 } from '../app'
 import { extractActualProperties, MockClient } from './common'
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 
 beforeEach(() => {
     document.body.textContent = ''
@@ -38,12 +38,12 @@ test('views with a complete scenario', async () => {
 
     const div = render(view)
     document.body.appendChild(div)
-    const appView: AppView & HTMLElement = document.querySelector(
+    const appView: AppView & HTMLDivElement = document.querySelector(
         `.${AppView.ClassName}`,
     )
 
     expect(appView).toBeTruthy()
-    expect(appView.filterMode$.value).toBe('All')
+    expect(appView.filterMode$).toBe('All')
 
     //----------------
     // Test the view of items container
