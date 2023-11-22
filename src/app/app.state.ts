@@ -1,5 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs'
-import { map, mergeMap, skip } from 'rxjs/operators'
+import { BehaviorSubject, Observable, map, mergeMap, skip } from 'rxjs'
 import { CdnSessionsStorage } from '@youwol/http-clients'
 import {
     Json,
