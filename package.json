@@ -1,7 +1,7 @@
 {
     "name": "@youwol/todo-app-ts",
     "description": "todo app in typescript using flux-view",
-    "version": "0.0.4-wip",
+    "version": "0.0.4",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/todo-app-ts#README.md",
     "main": "dist/index.html",
