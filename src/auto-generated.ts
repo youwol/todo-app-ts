@@ -1,30 +1,22 @@
 
 const runTimeDependencies = {
     "externals": {
-        "rxjs": "^7.5.6",
-        "@youwol/rx-vdom": "^1.0.1",
         "@youwol/http-clients": "^3.0.0",
         "@youwol/http-primitives": "^0.2.0",
-        "@youwol/webpm-client": "^3.0.0"
+        "@youwol/rx-vdom": "^1.0.1",
+        "@youwol/webpm-client": "^3.0.0",
+        "rxjs": "^7.5.6"
     },
     "includedInBundle": {}
 }
 const externals = {
-    "rxjs": "window['rxjs_APIv7']",
-    "@youwol/rx-vdom": "window['@youwol/rx-vdom_APIv1']",
     "@youwol/http-clients": "window['@youwol/http-clients_APIv3']",
     "@youwol/http-primitives": "window['@youwol/http-primitives_APIv02']",
-    "@youwol/webpm-client": "window['@youwol/webpm-client_APIv3']"
+    "@youwol/rx-vdom": "window['@youwol/rx-vdom_APIv1']",
+    "@youwol/webpm-client": "window['@youwol/webpm-client_APIv3']",
+    "rxjs": "window['rxjs_APIv7']"
 }
 const exportedSymbols = {
-    "rxjs": {
-        "apiKey": "7",
-        "exportedSymbol": "rxjs"
-    },
-    "@youwol/rx-vdom": {
-        "apiKey": "1",
-        "exportedSymbol": "@youwol/rx-vdom"
-    },
     "@youwol/http-clients": {
         "apiKey": "3",
         "exportedSymbol": "@youwol/http-clients"
@@ -33,9 +25,17 @@ const exportedSymbols = {
         "apiKey": "02",
         "exportedSymbol": "@youwol/http-primitives"
     },
+    "@youwol/rx-vdom": {
+        "apiKey": "1",
+        "exportedSymbol": "@youwol/rx-vdom"
+    },
     "@youwol/webpm-client": {
         "apiKey": "3",
         "exportedSymbol": "@youwol/webpm-client"
+    },
+    "rxjs": {
+        "apiKey": "7",
+        "exportedSymbol": "rxjs"
     }
 }
 
